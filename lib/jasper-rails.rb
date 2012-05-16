@@ -1,4 +1,4 @@
-require "jasper_rails/version"
+require "jasper-rails/version"
 require "rails"
 require "rjb"
 require "rspec"
