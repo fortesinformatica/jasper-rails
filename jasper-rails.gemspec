@@ -16,8 +16,5 @@ Gem::Specification.new do |s|
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ["lib"]
 
-  s.add_dependency('rspec', '>= 2.8.0')
-  s.add_dependency('rspec-rails', '>= 2.8.0')
   s.add_dependency('rjb', '>= 1.4.0')
-  s.add_dependency('pdf-inspector', '>= 1.0.1')
 end
