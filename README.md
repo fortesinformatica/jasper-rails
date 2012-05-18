@@ -61,6 +61,23 @@ Example:
  
 * app/views/people/index.jrxml
 
+## Parameters
+
+```ruby
+  def index
+    @people = Person.all
+
+    # This variable will be available in your report!
+    @user = "John Doe"
+
+    respond_with @people
+  end
+```
+
+All you have to do now is to create, in iReport, a parameter called "user" (yes, without the "@") and drop it in your report!
+
+Limitation: By now, all parameters are converted to java String. We intend to change this in the near future.
+
 ## RSpec integration
 Check out: [jasper-rails-rspec](http://github.com/fortesinformatica/jasper-rails-rspec).
 
