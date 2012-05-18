@@ -6,7 +6,7 @@ For rspec integration, see: [jasper-rails-rspec](http://github.com/fortesinforma
 
 ## Dependencies
 
-You need a Java Virtual Machine installed and set up in order to run this gem.
+You need a Java Virtual Machine installed and set up in order to use this gem.
 
 ## Install
 
@@ -25,7 +25,7 @@ Add `jasper-rails` to your Gemfile:
 Note: If you're running your application on OS X, this is usually all you have to do. On Linux, you might have
 to set the JAVA_HOME. On Windows, good luck!
 
-For any issues ralated to the java/ruby integration, please check: [http://rjb.rubyforge.org/](http://rjb.rubyforge.org/). You will find here plenty tips that might help you to solve your problem.
+For any issues related to the java/ruby integration, please check out: [http://rjb.rubyforge.org/](http://rjb.rubyforge.org/). You will find here plenty tips that might help you to solve your problem.
 
 ## Using jasper-rails
 
@@ -53,7 +53,9 @@ Example: If you have a list of people, you should have something like:
 * "Query Text" = /people/person
 * "The language for the dataset query" = xpath
 
-4) Save the report source file in your views folder (just like any other html view file):
+4) Design your report (add fields, groups, images, etc.)
+
+5) Save the report source file in your views folder (just like any other html view file):
 
 Example:
  
