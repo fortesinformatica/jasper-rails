@@ -1,6 +1,6 @@
 # jasper-rails
 
-Experimental JasperReports/Rails integration using Rjb (Java Ruby Bridge)
+Experimental JasperReports/Rails integration using Rjb (Ruby Java Bridge)
 
 For rspec integration, see: [jasper-rails-rspec](http://github.com/fortesinformatica/jasper-rails-rspec).
 
