@@ -34,7 +34,7 @@ module JasperRails
   Dir["#{File.dirname(__FILE__)}/java/*.jar"].each do |jar|
     classpath << File::PATH_SEPARATOR + File.expand_path(jar)
   end
-
+  
   Dir["lib/*.jar"].each do |jar|
     classpath << File::PATH_SEPARATOR + File.expand_path(jar)
   end
@@ -47,7 +47,8 @@ module JasperRails
   JasperFillManager           = Rjb::import 'net.sf.jasperreports.engine.JasperFillManager'
   JasperPrint                 = Rjb::import 'net.sf.jasperreports.engine.JasperPrint'
   JRXmlUtils                  = Rjb::import 'net.sf.jasperreports.engine.util.JRXmlUtils'
-  JRXPathQueryExecuterFactory = Rjb::import 'net.sf.jasperreports.engine.query.JRXPathQueryExecuterFactory'
+  # This is here to avoid the "already initialized constant QUERY_EXECUTER_FACTORY_PREFIX" warnings.
+  JRXPathQueryExecuterFactory = silence_warnings{Rjb::import 'net.sf.jasperreports.engine.query.JRXPathQueryExecuterFactory'}
   InputSource                 = Rjb::import 'org.xml.sax.InputSource'
   StringReader                = Rjb::import 'java.io.StringReader'
   HashMap                     = Rjb::import 'java.util.HashMap'
@@ -80,7 +81,6 @@ module JasperRails
           input_source.setCharacterStream(StringReader.new(datasource.to_xml(options).to_s))
           data_document = silence_warnings do
             # This is here to avoid the "already initialized constant DOCUMENT_POSITION_*" warnings.
-            # It's harmless. But pretty annoying.
             JRXmlUtils._invoke('parse', 'Lorg.xml.sax.InputSource;', input_source)
           end
 
