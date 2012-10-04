@@ -1,8 +1,12 @@
 # jasper-rails
 
-Experimental JasperReports/Rails integration using Rjb (Ruby Java Bridge)
+JasperReports/Rails integration using Rjb (Ruby Java Bridge)
 
 For rspec integration, see: [jasper-rails-rspec](http://github.com/fortesinformatica/jasper-rails-rspec).
+
+# News!
+
+Updated to JasperReports 4.7.1
 
 ## Dependencies
 
@@ -84,9 +88,9 @@ Check out: [jasper-rails-rspec](http://github.com/fortesinformatica/jasper-rails
 ## DEMO
 For a running example, just clone: [jasper-rails-demo](http://github.com/fortesinformatica/jasper-rails-demo).
 
-## Is this gem still experimental?
-YES. We have just migrated this code from a internal project at Grupo Fortes. We already use this gem in a couple of projects and we are very happy with it.
-However, pay attention that all the features it supports right now were based in those project's especific needs. Therefore you might find a lot of 
+## History
+This project was first developed at Grupo Fortes in 2011 and we have been using it in several projects since then.
+Pay attention that all the features it supports right now were based in those project's especific needs. Therefore you might find a lot of 
 JasperResports' features that are not yet supported. So, use it at your own risk! 
    
 ## TODO
