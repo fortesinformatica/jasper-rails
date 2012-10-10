@@ -91,12 +91,12 @@ module JasperRails
           JasperExportManager._invoke('exportReportToPdf', 'Lnet.sf.jasperreports.engine.JasperPrint;', jasper_print)
         rescue Exception=>e
           if e.respond_to? 'printStackTrace'
-            puts e.message
+            ::Rails.logger.error e.message
             e.printStackTrace
           else
-            puts e.message
-            puts e.backtrace
+            ::Rails.logger.error e.message + "\n " + e.backtrace.join("\n ")
           end
+          raise e
         end
       end
     end

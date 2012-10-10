@@ -95,7 +95,6 @@ JasperResports' features that are not yet supported. So, use it at your own risk
    
 ## TODO
 * Configuration
-* Better error treatment
 * More RSpec matchers
 * SPECS!!!
 
