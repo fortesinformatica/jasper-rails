@@ -23,6 +23,7 @@
 require "jasper-rails/version"
 require "rails"
 require "rjb"
+require "action_controller/metal/responder"
 
 if Mime::Type.lookup_by_extension("pdf").nil?
   Mime::Type.register "application/pdf", :pdf
@@ -104,7 +105,7 @@ module JasperRails
 
   class ActionController::Responder
     def to_pdf
-      jasper_file = "app/views/#{controller.controller_path}/#{controller.action_name}.jasper"
+      jasper_file = "#{Rails.root.to_s}/app/views/#{controller.controller_path}/#{controller.action_name}.jasper"
 
       params = {}
       controller.instance_variables.each do |v|
