@@ -9,7 +9,7 @@
 	<style name="Detail" fontName="Arial" fontSize="12"/>
 	<parameter name="parameter_defined_in_the_controller" class="java.lang.String"/>
 	<queryString language="xPath">
-		<![CDATA[/people/person]]>
+		<![CDATA[]]>
 	</queryString>
 	<field name="name" class="java.lang.String">
 		<fieldDescription><![CDATA[name]]></fieldDescription>
@@ -27,17 +27,10 @@
 				<imageExpression><![CDATA["wood.jpg"]]></imageExpression>
 			</image>
 			<staticText>
-				<reportElement uuid="dfeee47e-d32e-4525-a708-7cc3d6ec3f91" style="Title" x="0" y="5" width="263" height="33"/>
+				<reportElement uuid="dfeee47e-d32e-4525-a708-7cc3d6ec3f91" style="Title" x="0" y="5" width="342" height="33"/>
 				<textElement verticalAlignment="Middle"/>
-				<text><![CDATA[jasper-rails]]></text>
+				<text><![CDATA[I don't have a query string]]></text>
 			</staticText>
-			<textField>
-				<reportElement uuid="91699025-171b-40b4-ae45-eb9cdca69b2b" x="97" y="38" width="358" height="20" forecolor="#FFFFFF"/>
-				<textElement>
-					<font size="15"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{parameter_defined_in_the_controller}]]></textFieldExpression>
-			</textField>
 		</band>
 	</title>
 	<pageHeader>
@@ -51,31 +44,10 @@
 					<pen lineWidth="0.5" lineColor="#999999"/>
 				</graphicElement>
 			</line>
-			<staticText>
-				<reportElement uuid="89d037e3-230c-4845-b0aa-a43920c60dc2" x="48" y="15" width="100" height="20"/>
-				<textElement/>
-				<text><![CDATA[name]]></text>
-			</staticText>
-			<staticText>
-				<reportElement uuid="6920786b-3719-4243-bee2-9e4073274cb1" x="245" y="15" width="100" height="20"/>
-				<textElement/>
-				<text><![CDATA[email]]></text>
-			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="21" splitType="Stretch">
-			<textField>
-				<reportElement uuid="63d9b6a9-caa5-40d8-8bb0-41822dd43364" x="48" y="0" width="185" height="20"/>
-				<textElement/>
-				<textFieldExpression><![CDATA[$F{name}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement uuid="83b41533-c6ed-4de6-8c48-5545c9c78e43" x="245" y="0" width="290" height="20"/>
-				<textElement/>
-				<textFieldExpression><![CDATA[$F{email}]]></textFieldExpression>
-			</textField>
-		</band>
+		<band height="21" splitType="Stretch"/>
 	</detail>
 	<columnFooter>
 		<band height="45" splitType="Stretch">

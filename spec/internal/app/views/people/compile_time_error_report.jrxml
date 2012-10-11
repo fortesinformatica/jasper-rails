@@ -36,7 +36,7 @@
 				<textElement>
 					<font size="15"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{parameter_defined_in_the_controller}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{undefined_parameter}]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>
