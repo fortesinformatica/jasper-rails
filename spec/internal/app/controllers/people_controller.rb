@@ -17,4 +17,9 @@ class PeopleController < ActionController::Base
     respond_with []
   end
 
+  def nil_datasource
+    @parameter_defined_in_the_controller = "I'm a parameter. I was defined in the controller"
+    respond_with nil
+  end
+
 end

@@ -3,6 +3,7 @@ Rails.application.routes.draw do
     collection do
       get 'compile_time_error_report'
       get 'runtime_error_report'
+      get 'nil_datasource'
     end
   end
 end

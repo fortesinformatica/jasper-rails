@@ -47,7 +47,7 @@ describe PeopleController do
       
       response.should contain("I'm a parameter. I was defined in the controller")
     end
-    
+
 	end
 	
   describe "GET compile_time_error_report" do
@@ -62,6 +62,16 @@ describe PeopleController do
     
     it "should raise a RuntimeError if the report could not be filled due to a runtime error" do
       expect { get :runtime_error_report, :format => :pdf }.to raise_error(RuntimeError)
+    end
+    
+  end
+  	
+  describe "GET nil_datasource" do
+    
+    it "should treat nil datasources" do
+      get :nil_datasource, :format => :pdf
+      
+      response.should contain("I'm a parameter. I was defined in the controller")
     end
     
   end

@@ -48,6 +48,7 @@ module JasperRails
   JasperFillManager           = Rjb::import 'net.sf.jasperreports.engine.JasperFillManager'
   JasperPrint                 = Rjb::import 'net.sf.jasperreports.engine.JasperPrint'
   JRXmlUtils                  = Rjb::import 'net.sf.jasperreports.engine.util.JRXmlUtils'
+  JREmptyDataSource           = Rjb::import 'net.sf.jasperreports.engine.JREmptyDataSource'
   # This is here to avoid the "already initialized constant QUERY_EXECUTER_FACTORY_PREFIX" warnings.
   JRXPathQueryExecuterFactory = silence_warnings{Rjb::import 'net.sf.jasperreports.engine.query.JRXPathQueryExecuterFactory'}
   InputSource                 = Rjb::import 'org.xml.sax.InputSource'
@@ -78,15 +79,19 @@ module JasperRails
           end
 
           # Fill the report
-          input_source = InputSource.new
-          input_source.setCharacterStream(StringReader.new(datasource.to_xml(options).to_s))
-          data_document = silence_warnings do
-            # This is here to avoid the "already initialized constant DOCUMENT_POSITION_*" warnings.
-            JRXmlUtils._invoke('parse', 'Lorg.xml.sax.InputSource;', input_source)
+          if datasource
+            input_source = InputSource.new
+            input_source.setCharacterStream(StringReader.new(datasource.to_xml(options).to_s))
+            data_document = silence_warnings do
+              # This is here to avoid the "already initialized constant DOCUMENT_POSITION_*" warnings.
+              JRXmlUtils._invoke('parse', 'Lorg.xml.sax.InputSource;', input_source)
+            end
+  
+            jasper_params.put(JRXPathQueryExecuterFactory.PARAMETER_XML_DATA_DOCUMENT, data_document)
+            jasper_print = JasperFillManager.fillReport(jasper_file, jasper_params)
+          else
+            jasper_print = JasperFillManager.fillReport(jasper_file, jasper_params, JREmptyDataSource.new)
           end
-
-          jasper_params.put(JRXPathQueryExecuterFactory.PARAMETER_XML_DATA_DOCUMENT, data_document)
-          jasper_print = JasperFillManager.fillReport(jasper_file, jasper_params)
 
           # Export it!
           JasperExportManager._invoke('exportReportToPdf', 'Lnet.sf.jasperreports.engine.JasperPrint;', jasper_print)
