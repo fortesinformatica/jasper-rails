@@ -30,6 +30,11 @@ if Mime::Type.lookup_by_extension("pdf").nil?
 end
 
 module JasperRails
+  
+  class << self
+    attr_accessor :config
+  end
+  self.config = {:language=>'en', :country=>'US'}
 
   classpath = '.'
   Dir["#{File.dirname(__FILE__)}/java/*.jar"].each do |jar|
@@ -42,6 +47,7 @@ module JasperRails
 
   Rjb::load( classpath, ['-Djava.awt.headless=true','-Xms128M', '-Xmx256M'] )
 
+  Locale                      = Rjb::import 'java.util.Locale'
   JRException                 = Rjb::import 'net.sf.jasperreports.engine.JRException'
   JasperCompileManager        = Rjb::import 'net.sf.jasperreports.engine.JasperCompileManager'
   JasperExportManager         = Rjb::import 'net.sf.jasperreports.engine.JasperExportManager'
@@ -60,6 +66,7 @@ module JasperRails
 
   module Jasper
     module Rails
+      
       def self.render_pdf(jasper_file, datasource, parameters, options)
         options ||= {}
         parameters ||= {}
@@ -72,6 +79,8 @@ module JasperRails
           parameters.each do |k,v|
             jasper_params.put(JavaString.new(k.to_s), JavaString.new(v.to_s))
           end
+
+          jasper_params.put("REPORT_LOCALE", Locale.new(JasperRails.config[:language], JasperRails.config[:country]))
 
           # Compile it, if needed
           if !File.exist?(jasper_file) || (File.exist?(jrxml_file) && File.mtime(jrxml_file) > File.mtime(jasper_file))
