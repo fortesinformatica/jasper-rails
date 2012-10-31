@@ -34,7 +34,6 @@ module JasperRails
   class << self
     attr_accessor :config
   end
-  self.config = {:language=>'en', :country=>'US'}
 
   classpath = '.'
   Dir["#{File.dirname(__FILE__)}/java/*.jar"].each do |jar|
@@ -64,6 +63,14 @@ module JasperRails
   JavaString                  = Rjb::import 'java.lang.String'
   JFreeChart                  = Rjb::import 'org.jfree.chart.JFreeChart'
 
+  self.config = {
+    :report_params=>{
+      "REPORT_LOCALE"    => Locale.new('en', 'US'),
+      "XML_LOCALE"       => Locale.new('en', 'US'),      
+      "XML_DATE_PATTERN" => 'yyy-MM-dd'
+    }
+  }
+  
   module Jasper
     module Rails
       
@@ -76,11 +83,13 @@ module JasperRails
           # Convert the ruby parameters' hash to a java HashMap.
           # Pay attention that, for now, all parameters are converted to string!
           jasper_params = HashMap.new
+          JasperRails.config[:report_params].each do |k,v|
+            jasper_params.put(k, v)
+          end
+
           parameters.each do |k,v|
             jasper_params.put(JavaString.new(k.to_s), JavaString.new(v.to_s))
           end
-
-          jasper_params.put("REPORT_LOCALE", Locale.new(JasperRails.config[:language], JasperRails.config[:country]))
 
           # Compile it, if needed
           if !File.exist?(jasper_file) || (File.exist?(jrxml_file) && File.mtime(jrxml_file) > File.mtime(jasper_file))
