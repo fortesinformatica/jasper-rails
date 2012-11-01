@@ -63,6 +63,7 @@ module JasperRails
   JavaString                  = Rjb::import 'java.lang.String'
   JFreeChart                  = Rjb::import 'org.jfree.chart.JFreeChart'
 
+  # Default report params
   self.config = {
     :report_params=>{
       "REPORT_LOCALE"    => Locale.new('en', 'US'),
@@ -80,13 +81,14 @@ module JasperRails
         jrxml_file  = jasper_file.sub(/\.jasper$/, ".jrxml")
 
         begin
-          # Convert the ruby parameters' hash to a java HashMap.
-          # Pay attention that, for now, all parameters are converted to string!
+          # Converting default report params to java HashMap
           jasper_params = HashMap.new
           JasperRails.config[:report_params].each do |k,v|
             jasper_params.put(k, v)
           end
-
+          
+          # Convert the ruby parameters' hash to a java HashMap.\
+          # Pay attention that, for now, all parameters are converted to string!
           parameters.each do |k,v|
             jasper_params.put(JavaString.new(k.to_s), JavaString.new(v.to_s))
           end
