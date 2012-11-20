@@ -46,9 +46,9 @@ Note: This list will become your datasource inside the report.
 
 2) Create your jasper report source file using iReport or any compatible jasper tool.
 
-3) Set the "Query Text" and "The language for the dataset query" properties of your report. 
+3) Set the "Query Text" and "The language for the dataset query" properties of your report.
 
-Note: If you're using iReport, you can find those properties in the "Properties panel". 
+Note: If you're using iReport, you can find those properties in the "Properties panel".
 Don't forget to select the report root node in your "Report inspector".
 
 Example: If you have a list of people, you should have something like:
@@ -60,7 +60,7 @@ Example: If you have a list of people, you should have something like:
 5) Save the report source file in your views folder (just like any other html view file):
 
 Example:
- 
+
 * app/views/people/index.jrxml
 
 ## Parameters
@@ -78,7 +78,7 @@ Example:
 
 All you have to do now is to create, in iReport, a parameter called "user" (yes, without the "@") and drop it in your report!
 
-Limitation: By now, all parameters are converted to java String. We intend to change this in the near future.
+Limitation: By now, all parameters that aren't manually converted to Rjb java classes/instances are converted to java String. We intend to change this in the near future.
 
 ## RSpec integration
 Check out: [jasper-rails-rspec](http://github.com/fortesinformatica/jasper-rails-rspec).
@@ -88,14 +88,14 @@ For a running example, just clone: [jasper-rails-demo](http://github.com/fortesi
 
 ## History
 This project was first developed at Grupo Fortes in 2011 and we have been using it in several projects since then.
-Pay attention that all the features it supports right now were based in those project's especific needs. Therefore you might find a lot of 
-JasperResports' features that are not yet supported. 
-   
+Pay attention that all the features it supports right now were based in those project's especific needs. Therefore you might find a lot of
+JasperResports' features that are not yet supported.
+
 ## LICENSE
 
 Copyright (C) 2012 Marlus Saraiva, Rodrigo Maia
 
-Permission is hereby granted, free of charge, to any person obtaining 
+Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
 "Software"), to deal in the Software without restriction, including
 without limitation the rights to use, copy, modify, merge, publish,
@@ -108,7 +108,7 @@ included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
 EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND 
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
 NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
 LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
 OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
