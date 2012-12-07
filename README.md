@@ -80,6 +80,26 @@ All you have to do now is to create, in iReport, a parameter called "user" (yes,
 
 Limitation: By now, all parameters that aren't manually converted to Rjb java classes/instances are converted to java String. We intend to change this in the near future.
 
+## Passing Java parameters directly
+
+```ruby
+  title = (Rjb::import 'java.lang.String').new("The Beatles")
+  @parameter_that_is_a_java_class = (Rjb::import 'java.util.HashMap').new
+  @parameter_that_is_a_java_class.put("title", title)
+```
+
+For more information check out issue: [#13](https://github.com/fortesinformatica/jasper-rails/pull/13)
+
+## Global configuration
+
+You can change any default report param by setting JasperRails.config[:report_params], e.g., in your "config/application.rb" you might have something like:
+
+```ruby
+  config.after_initialize do
+    JasperRails.config[:report_params]["REPORT_LOCALE"] = JasperRails::Locale.new('pt', 'BR')
+  end
+```
+
 ## RSpec integration
 Check out: [jasper-rails-rspec](http://github.com/fortesinformatica/jasper-rails-rspec).
 
