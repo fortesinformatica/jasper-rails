@@ -29,6 +29,10 @@ if Mime::Type.lookup_by_extension("pdf").nil?
   Mime::Type.register "application/pdf", :pdf
 end
 
+if Mime::Type.lookup_by_extension("odt").nil?
+  Mime::Type.register "application/odt", :odt
+end
+
 module JasperRails
 
   class << self
@@ -125,6 +129,65 @@ module JasperRails
           raise e
         end
       end
+      
+      # First way to export ODT ( refactoring needed, normaly just export part change )
+      def self.render_odt(jasper_file, datasource, parameters, options)
+        options ||= {}
+        parameters ||= {}
+        jrxml_file  = jasper_file.sub(/\.jasper$/, ".jrxml")
+
+        begin
+          # Converting default report params to java HashMap
+          jasper_params = HashMap.new
+          JasperRails.config[:report_params].each do |k,v|
+            jasper_params.put(k, v)
+          end
+
+          # Convert the ruby parameters' hash to a java HashMap, but keeps it as
+          # default when they already represent a JRB entity.
+          # Pay attention that, for now, all other parameters are converted to string!
+          parameters.each do |key, value|
+            jasper_params.put(JavaString.new(key.to_s), parameter_value_of(value))
+          end
+
+          # Compile it, if needed
+          if !File.exist?(jasper_file) || (File.exist?(jrxml_file) && File.mtime(jrxml_file) > File.mtime(jasper_file))
+            JasperCompileManager.compileReportToFile(jrxml_file, jasper_file)
+          end
+
+          # Fill the report
+          if datasource
+            input_source = InputSource.new
+            input_source.setCharacterStream(StringReader.new(datasource.to_xml(options).to_s))
+            data_document = silence_warnings do
+              # This is here to avoid the "already initialized constant DOCUMENT_POSITION_*" warnings.
+              JRXmlUtils._invoke('parse', 'Lorg.xml.sax.InputSource;', input_source)
+            end
+
+            jasper_params.put(JRXPathQueryExecuterFactory.PARAMETER_XML_DATA_DOCUMENT, data_document)
+            jasper_print = JasperFillManager.fillReport(jasper_file, jasper_params)
+          else
+            jasper_print = JasperFillManager.fillReport(jasper_file, jasper_params, JREmptyDataSource.new)
+          end
+
+          # Export it! JAVA Version
+          # JROdtExporter exporter = new JROdtExporter();
+          # exporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
+          # exporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME, "foo.odt" );
+          exporter = JROdtExporter.new
+          exporter.setParameter(JRExporterParameter.JASPER_PRINT, jasper_print)
+          # I am sure that it could work like this
+          exporter.exportReport()
+        rescue Exception=>e
+          if e.respond_to? 'printStackTrace'
+            ::Rails.logger.error e.message
+            e.printStackTrace
+          else
+            ::Rails.logger.error e.message + "\n " + e.backtrace.join("\n ")
+          end
+          raise e
+        end
+      end
 
       # Returns the value without conversion when it's converted to Java Types.
       # When isn't a Rjb class, returns a Java String of it.
@@ -141,6 +204,7 @@ module JasperRails
   end
 
   class ActionController::Responder
+    
     def to_pdf
       jasper_file = "#{Rails.root.to_s}/app/views/#{controller.controller_path}/#{controller.action_name}.jasper"
 
@@ -150,6 +214,17 @@ module JasperRails
       end
 
       controller.send_data Jasper::Rails::render_pdf(jasper_file, resource, params, options), :type => Mime::PDF
+    end
+    
+   def to_odt
+      jasper_file = "#{Rails.root.to_s}/app/views/#{controller.controller_path}/#{controller.action_name}.jasper"
+
+      params = {}
+      controller.instance_variables.each do |v|
+        params[v.to_s[1..-1]] = controller.instance_variable_get(v)
+      end
+
+      controller.send_data Jasper::Rails::render_odt(jasper_file, resource, params, options), :type => Mime::ODT
     end
   end
 
