@@ -107,6 +107,9 @@ Check out: [jasper-rails-rspec](http://github.com/fortesinformatica/jasper-rails
 ## DEMO
 For a running example, just clone: [jasper-rails-demo](http://github.com/fortesinformatica/jasper-rails-demo).
 
+## Mailing List
+For any discussion related to this gem, feel free to join the [mailing list](https://groups.google.com/forum/#!forum/jasper-rails).
+
 ## History
 This project was first developed at Grupo Fortes in 2011 and we have been using it in several projects since then.
 Pay attention that all the features it supports right now were based in those project's especific needs. Therefore you might find a lot of
