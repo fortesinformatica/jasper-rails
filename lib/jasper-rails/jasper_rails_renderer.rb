@@ -70,11 +70,25 @@ module JasperRails
       
     end
     
+    def export jasper_print, jr_exporter
+      _ByteArrayOutputStream = Rjb::import 'java.io.ByteArrayOutputStream'
+      _JRExporter             = Rjb::import jr_exporter
+      _JRExporterParameter   = Rjb::import 'net.sf.jasperreports.engine.JRExporterParameter'
+      
+      exporter = _JRExporter.new
+      baos = _ByteArrayOutputStream.new
+      
+      exporter.setParameter(_JRExporterParameter.JASPER_PRINT, jasper_print);
+      exporter.setParameter(_JRExporterParameter.OUTPUT_STREAM, baos)
+      exporter.exportReport
+      baos.toByteArray      
+    end
+    
     def render jasper_file, datasource, parameters, controller_options
       begin
         compile(jasper_file)
         jasper_print = fill(jasper_file, datasource, parameters, controller_options)
-        block.call(jasper_print)
+        instance_exec(jasper_print, &block)
       rescue Exception=>e
         if e.respond_to? 'printStackTrace'
           ::Rails.logger.error e.message
