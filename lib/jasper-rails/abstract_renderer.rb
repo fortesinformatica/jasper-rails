@@ -18,8 +18,7 @@ module JasperRails
         end
   
         response_options = JasperRails.config[:response_options].merge(:type => options[:mime_type])
-        
-        controller.send_data renderer.render(jasper_file, resource, params, options), response_options
+        controller.send_data renderer.render(jasper_file, resource, params, self.options), response_options
       end
     end
   end
