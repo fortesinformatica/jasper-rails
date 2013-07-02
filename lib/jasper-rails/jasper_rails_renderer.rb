@@ -13,9 +13,19 @@ module JasperRails
     end
     
     def compile jasper_file
-      _JasperCompileManager        = Rjb::import 'net.sf.jasperreports.engine.JasperCompileManager'
+      _JasperCompileManager = Rjb::import 'net.sf.jasperreports.engine.JasperCompileManager'
       
       jrxml_file  = jasper_file.sub(/\.jasper$/, ".jrxml")
+      
+      # Recursively compile subreports
+      Nokogiri::XML(open(jrxml_file)).css('subreport/subreportExpression').each do |subreport_expression_node|
+        subreport_file = subreport_expression_node.text[1..-2]
+        
+        if Pathname.new(subreport_file).relative?
+          subreport_file = File.expand_path(File.join(File.dirname(jrxml_file), subreport_file))
+        end
+        compile(subreport_file)
+      end
       
       # Compile it, if needed
       if !File.exist?(jasper_file) || (File.exist?(jrxml_file) && File.mtime(jrxml_file) > File.mtime(jasper_file))
@@ -35,7 +45,7 @@ module JasperRails
       _StringReader                = Rjb::import 'java.io.StringReader'
       _HashMap                     = Rjb::import 'java.util.HashMap'
       _ByteArrayInputStream        = Rjb::import 'java.io.ByteArrayInputStream'
-      _String                  = Rjb::import 'java.lang.String'
+      _String                      = Rjb::import 'java.lang.String'
       _JFreeChart                  = Rjb::import 'org.jfree.chart.JFreeChart'
       
       parameters ||= {}
@@ -72,7 +82,7 @@ module JasperRails
     
     def export jasper_print, jr_exporter
       _ByteArrayOutputStream = Rjb::import 'java.io.ByteArrayOutputStream'
-      _JRExporter             = Rjb::import jr_exporter
+      _JRExporter            = Rjb::import jr_exporter
       _JRExporterParameter   = Rjb::import 'net.sf.jasperreports.engine.JRExporterParameter'
       
       exporter = _JRExporter.new

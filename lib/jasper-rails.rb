@@ -22,6 +22,7 @@
 
 require "jasper-rails/version"
 require "rails"
+require "nokogiri"
 require "rjb"
 require "action_controller/metal/responder"
 
