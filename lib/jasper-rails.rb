@@ -33,32 +33,62 @@ require "jasper-rails/default_renderer"
 module JasperRails
 
   class << self
+    attr_accessor :before_initialize_blocks
+    attr_accessor :after_initialize_blocks
     attr_accessor :config
   end
-
-  classpath = '.'
-  Dir["#{File.dirname(__FILE__)}/java/*.jar"].each do |jar|
-    classpath << File::PATH_SEPARATOR + File.expand_path(jar)
-  end
-
-  Dir["lib/*.jar"].each do |jar|
-    classpath << File::PATH_SEPARATOR + File.expand_path(jar)
-  end
-
-  Rjb::load( classpath, ['-Djava.awt.headless=true','-Xms128M', '-Xmx256M'] )
-
-  _Locale = Rjb::import 'java.util.Locale'
   
-  # Default report params
+  self.before_initialize_blocks = []
+  self.after_initialize_blocks  = []
   self.config = {
-    :report_params=>{
-      "REPORT_LOCALE"    => _Locale.new('en', 'US'),
-      "XML_LOCALE"       => _Locale.new('en', 'US'),
-      "XML_DATE_PATTERN" => 'yyyy-MM-dd'
-    },
-    :response_options=>{
-      :disposition    => 'inline'
-    }
+    :classpath        => '.',
+    :report_params    => {},
+    :response_options => {}
   }
+  
+  def self.before_initialize &block
+    self.before_initialize_blocks << block 
+  end
+  
+  def self.after_initialize &block
+    self.after_initialize_blocks << block 
+  end
+  
+  def self.add_classpath glob_pattern
+    Dir[glob_pattern].each do |path|
+      config[:classpath] << File::PATH_SEPARATOR + File.expand_path(path)
+    end
+  end
+    
+  def self.init    
+    before_initialize_blocks.each do |block|
+      block.call(config)
+    end
 
+    Rjb::load( config[:classpath], ['-Djava.awt.headless=true','-Xms128M', '-Xmx256M'] )
+    
+    after_initialize_blocks.each do |block|
+      block.call(config)
+    end
+  end
+
+  before_initialize do |config|
+    add_classpath "#{File.dirname(__FILE__)}/java/*.jar"
+    add_classpath "lib/*.jar"    
+  end
+  
+  after_initialize do |config|
+    _Locale = Rjb::import 'java.util.Locale'
+    config[:report_params]["XML_LOCALE"]       = _Locale.new('en', 'US')
+    config[:report_params]["REPORT_LOCALE"]    = _Locale.new('en', 'US')
+    config[:report_params]["XML_DATE_PATTERN"] = 'yyyy-MM-dd'
+    config[:response_options][:disposition]    = 'inline'    
+  end
+  
+  class Railtie < Rails::Railtie
+    config.after_initialize do
+      JasperRails.init
+    end
+  end
+  
 end
