@@ -42,6 +42,7 @@ module JasperRails
   self.after_initialize_blocks  = []
   self.config = {
     :classpath        => '.',
+    :java_options     => [],
     :report_params    => {},
     :response_options => {}
   }
@@ -65,7 +66,11 @@ module JasperRails
       block.call(config)
     end
 
-    Rjb::load( config[:classpath], ['-Djava.awt.headless=true','-Xms128M', '-Xmx256M'] )
+    if Rjb.loaded?
+      ::Rails.error "jasper-rails: Rjb already loaded! Classpath and java options will not apply."
+    else
+      Rjb::load( config[:classpath], config[:java_options] )
+    end
     
     after_initialize_blocks.each do |block|
       block.call(config)
@@ -74,7 +79,7 @@ module JasperRails
 
   before_initialize do |config|
     add_classpath "#{File.dirname(__FILE__)}/java/*.jar"
-    add_classpath "lib/*.jar"    
+    config[:java_options] += ['-Djava.awt.headless=true','-Xms128M', '-Xmx256M']    
   end
   
   after_initialize do |config|
