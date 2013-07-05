@@ -43,12 +43,14 @@ module JasperRails
   }
   
   RjbLoader.before_load do |config|
+    # This code changes the JVM classpath, so it has to run BEFORE loading Rjb.
     Dir["#{File.dirname(__FILE__)}/java/*.jar"].each do |path|
       config.classpath << File::PATH_SEPARATOR + File.expand_path(path)
     end
   end
   
   RjbLoader.after_load do |config|
+    # This code needs java classes, so it has to run AFTER loading Rjb.
     _Locale = Rjb::import 'java.util.Locale'
     JasperRails.config[:report_params]["XML_LOCALE"]       = _Locale.new('en', 'US')
     JasperRails.config[:report_params]["REPORT_LOCALE"]    = _Locale.new('en', 'US')
