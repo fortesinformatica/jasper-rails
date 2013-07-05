@@ -24,76 +24,36 @@ require "jasper-rails/version"
 require "rails"
 require "nokogiri"
 require "rjb"
+require "rjb-loader"
 require "action_controller/metal/responder"
 
 require "jasper-rails/abstract_renderer"
-require "jasper-rails/jasper_rails_renderer"
+require "jasper-rails/jasper_reports_renderer"
 require "jasper-rails/default_renderer"
 
 module JasperRails
 
   class << self
-    attr_accessor :before_initialize_blocks
-    attr_accessor :after_initialize_blocks
     attr_accessor :config
   end
   
-  self.before_initialize_blocks = []
-  self.after_initialize_blocks  = []
   self.config = {
-    :classpath        => '.',
-    :java_options     => [],
     :report_params    => {},
     :response_options => {}
   }
   
-  def self.before_initialize &block
-    self.before_initialize_blocks << block 
+  RjbLoader.before_load do |config|
+    Dir["#{File.dirname(__FILE__)}/java/*.jar"].each do |path|
+      config.classpath << File::PATH_SEPARATOR + File.expand_path(path)
+    end
   end
   
-  def self.after_initialize &block
-    self.after_initialize_blocks << block 
-  end
-  
-  def self.add_classpath glob_pattern
-    Dir[glob_pattern].each do |path|
-      config[:classpath] << File::PATH_SEPARATOR + File.expand_path(path)
-    end
-  end
-    
-  def self.init    
-    before_initialize_blocks.each do |block|
-      block.call(config)
-    end
-
-    if Rjb.loaded?
-      ::Rails.error "jasper-rails: Rjb already loaded! Classpath and java options will not apply."
-    else
-      Rjb::load( config[:classpath], config[:java_options] )
-    end
-    
-    after_initialize_blocks.each do |block|
-      block.call(config)
-    end
-  end
-
-  before_initialize do |config|
-    add_classpath "#{File.dirname(__FILE__)}/java/*.jar"
-    config[:java_options] += ['-Djava.awt.headless=true','-Xms128M', '-Xmx256M']    
-  end
-  
-  after_initialize do |config|
+  RjbLoader.after_load do |config|
     _Locale = Rjb::import 'java.util.Locale'
-    config[:report_params]["XML_LOCALE"]       = _Locale.new('en', 'US')
-    config[:report_params]["REPORT_LOCALE"]    = _Locale.new('en', 'US')
-    config[:report_params]["XML_DATE_PATTERN"] = 'yyyy-MM-dd'
-    config[:response_options][:disposition]    = 'inline'    
-  end
-  
-  class Railtie < Rails::Railtie
-    config.after_initialize do
-      JasperRails.init
-    end
+    JasperRails.config[:report_params]["XML_LOCALE"]       = _Locale.new('en', 'US')
+    JasperRails.config[:report_params]["REPORT_LOCALE"]    = _Locale.new('en', 'US')
+    JasperRails.config[:report_params]["XML_DATE_PATTERN"] = 'yyyy-MM-dd'
+    JasperRails.config[:response_options][:disposition]    = 'inline'    
   end
   
 end

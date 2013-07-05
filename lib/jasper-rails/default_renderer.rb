@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 -*
 module JasperRails
   
-  class DefaultRenderer < JasperRailsRenderer
+  class DefaultRenderer < JasperReportsRenderer
     
     register :pdf, :mime_type => Mime::PDF do |jasper_print|
       _JasperExportManager = Rjb::import 'net.sf.jasperreports.engine.JasperExportManager'

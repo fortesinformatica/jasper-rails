@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 -*-
 module JasperRails
   
-  class JasperRailsRenderer < AbstractRenderer
+  class JasperReportsRenderer < AbstractRenderer
     attr_accessor :file_extension
     attr_accessor :options
     attr_accessor :block

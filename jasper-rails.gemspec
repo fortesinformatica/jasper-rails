@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
   s.authors     = ["Marlus Saraiva", "Rodrigo Maia"]
   s.summary     = %q{Rails and JasperReports integration}
   s.description = %q{Generate pdf reports on Rails using Jasper Reports reporting tool}
-  s.email       = "rodrigomaia@grupofortes.com.br"
+  s.email       = "marlussaraiva@grupofortes.com.br"
   s.homepage    = "https://github.com/fortesinformatica/jasper-rails"
 
   s.files         = `git ls-files`.split("\n")
@@ -16,8 +16,8 @@ Gem::Specification.new do |s|
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ["lib"]
 
-  s.add_dependency('rjb', '1.4.3')
-  s.add_dependency('nokogiri')
+  s.add_dependency 'rjb-loader'
+  s.add_dependency 'nokogiri'
   s.add_development_dependency 'combustion', '~> 0.3.2'
   s.add_development_dependency "rspec-rails"
   s.add_development_dependency "jasper-rails-rspec"
