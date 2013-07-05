@@ -46,7 +46,6 @@ module JasperRails
       _HashMap                     = Rjb::import 'java.util.HashMap'
       _ByteArrayInputStream        = Rjb::import 'java.io.ByteArrayInputStream'
       _String                      = Rjb::import 'java.lang.String'
-      _JFreeChart                  = Rjb::import 'org.jfree.chart.JFreeChart'
       
       parameters ||= {}
   
