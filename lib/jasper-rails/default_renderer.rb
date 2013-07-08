@@ -8,8 +8,8 @@ module JasperRails
       _JasperExportManager._invoke('exportReportToPdf', 'Lnet.sf.jasperreports.engine.JasperPrint;', jasper_print)
     end
     
-    register :xls, :mime_type => 'application/vnd.ms-excel' do |jasper_print|
-      export jasper_print, 'net.sf.jasperreports.engine.export.JRXlsExporter'
+    register :csv, :mime_type => 'text/csv' do |jasper_print|
+      export jasper_print, 'net.sf.jasperreports.engine.export.JRCsvExporter'
     end
     
     register :odt, :mime_type => 'application/vnd.oasis.opendocument.text, application/x-vnd.oasis.opendocument.text' do |jasper_print|
