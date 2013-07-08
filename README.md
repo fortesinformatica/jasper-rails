@@ -3,9 +3,7 @@
 JasperReports/Rails integration using Rjb (Ruby Java Bridge)
 
 # News!
-- Updated to JasperReports 5.0.0
-- Global configuration (default report params)
-- Passing Java parameters directly
+- jasper-rails 2.0.0.beta1 released!
 
 ## Dependencies
 
