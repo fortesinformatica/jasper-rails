@@ -3,12 +3,12 @@ module JasperRails
   
   class DefaultRenderer < JasperReportsRenderer
     
-    register :pdf, :mime_type => Mime::PDF do |jasper_print|
+    register :pdf, :mime_type => Mime::PDF do |jasper_print, options|
       _JasperExportManager = Rjb::import 'net.sf.jasperreports.engine.JasperExportManager'
       _JasperExportManager._invoke('exportReportToPdf', 'Lnet.sf.jasperreports.engine.JasperPrint;', jasper_print)
     end
-    
-    register :csv, :mime_type => 'text/csv' do |jasper_print|
+
+    register :csv, :mime_type => 'text/csv' do |jasper_print, options|
       export jasper_print, 'net.sf.jasperreports.engine.export.JRCsvExporter'
     end
     
@@ -18,11 +18,11 @@ module JasperRails
   
     # It looks like xhtml is already registered, but there's no Mime::XHTML. So we need this until we find another solution. 
     Mime::Type.register('text/html', :xhtml)
-    register :xhtml, :mime_type => 'text/html' do |jasper_print|
+    register :xhtml, :mime_type => 'text/html' do |jasper_print, options|
       export jasper_print, 'net.sf.jasperreports.engine.export.JRXhtmlExporter'
     end
     
-    register :swf, :mime_type => 'application/swf' do |jasper_print|    
+    register :swf, :mime_type => 'application/swf' do |jasper_print, options|
       _JasperExportManager = Rjb::import 'net.sf.jasperreports.engine.JasperExportManager'
       _JavaString          = Rjb::import 'java.lang.String'
       
@@ -33,7 +33,7 @@ module JasperRails
       _JasperExportManager._invoke('exportReportToPdfFile', 'Lnet.sf.jasperreports.engine.JasperPrint;Ljava.lang.String;', jasper_print, _JavaString.new(pdf_file))
       
       # Convert to swf
-      `pdf2swf -t -T9 -f -s storeallcharacters #{pdf_file} -o #{swf_file}`
+      run_command "pdf2swf -t -T9 -f -s storeallcharacters #{pdf_file} -o #{swf_file}"
       
       # Get the stream
       swf_stream = open(swf_file) { |f| f.read }
@@ -43,6 +43,13 @@ module JasperRails
       
       swf_stream
     end
-    
+
+    private
+
+    def run_command(command)
+      output = `#{command} 2>&1`
+      raise RuntimeError.new("Command failed: #{command}\n#{output}") unless $?.success?
+    end
+
   end
 end

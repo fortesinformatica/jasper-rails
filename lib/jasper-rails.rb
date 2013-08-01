@@ -26,6 +26,7 @@ require "nokogiri"
 require "rjb"
 require "rjb-loader"
 require "action_controller/metal/responder"
+require "active_support/core_ext"
 
 require "jasper-rails/abstract_renderer"
 require "jasper-rails/jasper_reports_renderer"

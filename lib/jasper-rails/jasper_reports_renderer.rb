@@ -97,7 +97,8 @@ module JasperRails
       begin
         compile(jasper_file)
         jasper_print = fill(jasper_file, datasource, parameters, controller_options)
-        instance_exec(jasper_print, &block)
+        run_after_fill_blocks jasper_print, controller_options
+        instance_exec(jasper_print, controller_options, &block)
       rescue Exception=>e
         if e.respond_to? 'printStackTrace'
           ::Rails.logger.error e.message
@@ -108,9 +109,15 @@ module JasperRails
         raise e
       end
     end
-    
+
     private
-    
+
+    def run_after_fill_blocks jasper_print, controller_options
+      after_fill_blocks.each do |block|
+        instance_exec(jasper_print, controller_options, &block)
+      end
+    end
+
     # Returns the value without conversion when it's converted to Java Types.
     # When isn't a Rjb class, returns a Java String of it.
     def parameter_value_of(param)

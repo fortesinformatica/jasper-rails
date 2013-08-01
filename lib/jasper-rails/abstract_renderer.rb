@@ -2,6 +2,10 @@
 module JasperRails
     
   class AbstractRenderer
+
+    class_attribute :after_fill_blocks
+    self.after_fill_blocks = []
+
     def self.register(file_extension, options = {}, &block)
       renderer = self.new(file_extension, options, &block)
   
@@ -20,6 +24,10 @@ module JasperRails
         response_options = JasperRails.config[:response_options].merge(:type => options[:mime_type])
         controller.send_data renderer.render(jasper_file, resource, params, self.options), response_options
       end
+    end
+
+    def self.after_fill(&block)
+      self.after_fill_blocks += [block]
     end
   end
 end
