@@ -40,7 +40,8 @@ module JasperRails
   
   self.config = {
     :report_params    => {},
-    :response_options => {}
+    :response_options => {},
+    :xml_options      => {}
   }
   
   RjbLoader.before_load do |config|
@@ -57,6 +58,7 @@ module JasperRails
     JasperRails.config[:report_params]["REPORT_LOCALE"]    = _Locale.new('en', 'US')
     JasperRails.config[:report_params]["XML_DATE_PATTERN"] = 'yyyy-MM-dd'
     JasperRails.config[:response_options][:disposition]    = 'inline'    
+    JasperRails.config[:xml_options][:dasherize]           = false
   end
   
 end
