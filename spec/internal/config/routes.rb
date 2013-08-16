@@ -5,6 +5,7 @@ Rails.application.routes.draw do
       get 'runtime_error_report'
       get 'nil_datasource'
       get 'java_parameter'
+      get 'specifited_template'
     end
   end
 end
