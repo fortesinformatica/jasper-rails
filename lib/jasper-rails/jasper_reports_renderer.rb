@@ -59,7 +59,7 @@ module JasperRails
       # default when they already represent a JRB entity.
       # Pay attention that, for now, all other parameters are converted to string!
       parameters.each do |key, value|
-        jasper_params.put(_String.new(key.to_s), parameter_value_of(value))
+        jasper_params.put(_String.new(key.to_s, "UTF-8"), parameter_value_of(value))
       end
       
       # Fill the report
@@ -127,7 +127,7 @@ module JasperRails
       if param.class.parent == Rjb
         param
       else
-        _String.new(param.to_s)
+        _String.new(param.to_s, "UTF-8")
       end
     end
     
