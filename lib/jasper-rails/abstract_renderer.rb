@@ -14,7 +14,14 @@ module JasperRails
       end
       
       ActionController::Responder.send(:define_method, "to_#{file_extension}") do
-        jasper_file = "#{Rails.root.to_s}/app/views/#{controller.controller_path}/#{controller.action_name}.jasper"
+        if template_name = self.options[:template]
+        else
+          template_name = "#{controller.controller_path}/#{controller.action_name}"
+        end
+        details_options = {:formats => [:jrxml], :handlers => []}
+
+        jrxml_file = controller.lookup_context.find_template(template_name,[],false,[],details_options).identifier
+        jasper_file = jrxml_file.sub(/\.jrxml$/, ".jasper")      
   
         params = {}
         controller.instance_variables.each do |v|

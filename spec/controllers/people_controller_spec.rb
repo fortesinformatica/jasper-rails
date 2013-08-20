@@ -85,5 +85,21 @@ describe PeopleController do
     end
 
   end
+  
+  describe "specifited template" do
+    before do
+      Person.stub(:all).and_return([
+        Person.new(:name=>'john'  , :email=>'lennon@beatles.com'),
+        Person.new(:name=>'george', :email=>'harrison@beatles.com')
+      ])
+    end
+
+    it "should respond success with specifited template" do
+      get :specifited_template, :format => :pdf
+
+      response.should be_success
+    end
+
+  end
 
 end

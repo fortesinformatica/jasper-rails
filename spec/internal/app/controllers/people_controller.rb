@@ -29,5 +29,10 @@ class PeopleController < ActionController::Base
 
     respond_with nil
   end
+  
+  def specifited_template
+    @people = Person.all
+    respond_with @people, :template => "people/index"
+  end
 
 end
