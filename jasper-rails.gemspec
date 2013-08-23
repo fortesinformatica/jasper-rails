@@ -16,7 +16,7 @@ Gem::Specification.new do |s|
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ["lib"]
 
-  s.add_dependency 'rjb-loader'
+  s.add_dependency 'rjb-loader', '~>0.0.2'
   s.add_dependency 'nokogiri'
   s.add_development_dependency 'combustion', '~> 0.3.2'
   s.add_development_dependency "rspec-rails"
