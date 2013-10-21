@@ -32,7 +32,7 @@ module JasperRails
         _JasperCompileManager.compileReportToFile(jrxml_file, jasper_file)
       end
     end
-  
+
     def fill(jasper_file, datasource, parameters, controller_options={})
       _JRException                 = Rjb::import 'net.sf.jasperreports.engine.JRException'
       _JasperFillManager           = Rjb::import 'net.sf.jasperreports.engine.JasperFillManager'
@@ -46,7 +46,7 @@ module JasperRails
       _HashMap                     = Rjb::import 'java.util.HashMap'
       _ByteArrayInputStream        = Rjb::import 'java.io.ByteArrayInputStream'
       _String                      = Rjb::import 'java.lang.String'
-      
+
       parameters ||= {}
   
       # Converting default report params to java HashMap
@@ -72,13 +72,19 @@ module JasperRails
         end
   
         jasper_params.put(_JRXPathQueryExecuterFactory.PARAMETER_XML_DATA_DOCUMENT, data_document)
-        jasper_print = _JasperFillManager.fillReport(jasper_file, jasper_params)
+
+        generate_jasper_print jasper_params, jasper_file
       else
         jasper_print = _JasperFillManager.fillReport(jasper_file, jasper_params, _JREmptyDataSource.new)
       end
       
     end
-    
+
+    def generate_jasper_print jasper_params, jasper_file
+      _JasperFillManager = Rjb::import 'net.sf.jasperreports.engine.JasperFillManager'
+      jasper_print = _JasperFillManager.fillReport(jasper_file, jasper_params)
+    end
+
     def export jasper_print, jr_exporter
       _ByteArrayOutputStream = Rjb::import 'java.io.ByteArrayOutputStream'
       _JRExporter            = Rjb::import jr_exporter
@@ -87,7 +93,7 @@ module JasperRails
       exporter = _JRExporter.new
       baos = _ByteArrayOutputStream.new
       
-      exporter.setParameter(_JRExporterParameter.JASPER_PRINT, jasper_print);
+      exporter.setParameter(_JRExporterParameter.JASPER_PRINT, jasper_print)
       exporter.setParameter(_JRExporterParameter.OUTPUT_STREAM, baos)
       exporter.exportReport
       baos.toByteArray      
