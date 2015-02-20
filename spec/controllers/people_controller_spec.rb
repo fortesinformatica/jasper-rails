@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe PeopleController, :type => :controller do
+describe PeopleController do
 
 	describe "GET index" do
     before do

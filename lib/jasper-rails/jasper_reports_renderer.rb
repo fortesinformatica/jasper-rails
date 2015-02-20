@@ -70,7 +70,7 @@ module JasperRails
           # This is here to avoid the "already initialized constant DOCUMENT_POSITION_*" warnings.
           _JRXmlUtils._invoke('parse', 'Lorg.xml.sax.InputSource;', input_source)
         end
-
+  
         jasper_params.put(_JRXPathQueryExecuterFactory.PARAMETER_XML_DATA_DOCUMENT, data_document)
 
         generate_jasper_print jasper_params, jasper_file
@@ -128,15 +128,12 @@ module JasperRails
     # When isn't a Rjb class, returns a Java String of it.
     def parameter_value_of(param)
       _String = Rjb::import 'java.lang.String'
-      _Boolean = Rjb::import 'java.lang.Boolean'
       # Using Rjb::import('java.util.HashMap').new, it returns an instance of
       # Rjb::Rjb_JavaProxy, so the Rjb_JavaProxy parent is the Rjb module itself.
       if param.class.parent == Rjb
         param
-      elsif param.is_a?(TrueClass) || param.is_a?(FalseClass) 
-        _Boolean.new(param)
       else
-        _String.new(param.to_s)
+        _String.new(param.to_s, "UTF-8")
       end
     end
     
