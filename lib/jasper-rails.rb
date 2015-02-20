@@ -25,8 +25,14 @@ require "rails"
 require "nokogiri"
 require "rjb"
 require "rjb-loader"
-require "action_controller/metal/responder"
 require "active_support/core_ext"
+
+if Rails.version > "4.1"
+  require "active_model"
+  require "action_controller/metal/renderers"
+else
+  require "action_controller/metal/responder"
+end
 
 require "jasper-rails/abstract_renderer"
 require "jasper-rails/jasper_reports_renderer"
