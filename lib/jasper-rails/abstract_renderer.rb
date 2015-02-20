@@ -39,7 +39,7 @@ module JasperRails
           params[v.to_s[1..-1]] = controller.instance_variable_get(v)
         end
   
-        response_options = JasperRails.config[:response_options].merge(:type => options[:mime_type])
+        response_options = JasperRails.config[:response_options].merge(:type => opts[:mime_type])
         controller.send_data renderer.render(jasper_file, resource, params, self.options), response_options
       end
     end
