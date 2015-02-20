@@ -45,7 +45,7 @@ Note: This list will become your datasource inside the report.
 
 2) Create your jasper report source file using iReport or any compatible jasper tool.
 
-3) Set the "Query Text" and "The language for the dataset query" properties of your report.
+3) Set the "Query Text", "The language for the dataset query" and "Language" properties of your report.
 
 Note: If you're using iReport, you can find those properties in the "Properties panel".
 Don't forget to select the report root node in your "Report inspector".
@@ -53,6 +53,7 @@ Don't forget to select the report root node in your "Report inspector".
 Example: If you have a list of people, you should have something like:
 * "Query Text" = /people/person
 * "The language for the dataset query" = xpath
+* "Language = Java" (IMPORTANT!)
 
 4) Design your report (add fields, groups, images, etc.)
 
