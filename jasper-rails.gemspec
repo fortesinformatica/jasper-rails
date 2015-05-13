@@ -19,8 +19,4 @@ Gem::Specification.new do |s|
   s.add_dependency 'rjb-loader', '~>0.0.2'
   s.add_dependency 'nokogiri'
   s.add_dependency 'responders'
-
-  s.add_development_dependency 'combustion', '~> 0.3.2'
-  s.add_development_dependency "rspec-rails"
-  s.add_development_dependency "jasper-rails-rspec"
 end

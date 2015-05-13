@@ -26,9 +26,9 @@ require "nokogiri"
 require "rjb"
 require "rjb-loader"
 require "active_support/core_ext"
+require "active_model"
 
-if Rails.version > "4.1"
-  require "active_model"
+if Rails.version >= "4.2"
   require "action_controller/metal/renderers"
 else
   require "action_controller/metal/responder"
@@ -66,5 +66,4 @@ module JasperRails
     JasperRails.config[:response_options][:disposition]    = 'inline'    
     JasperRails.config[:xml_options][:dasherize]           = false
   end
-  
 end

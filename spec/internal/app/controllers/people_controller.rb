@@ -26,7 +26,6 @@ class PeopleController < ActionController::Base
     title = (Rjb::import 'java.lang.String').new("The Beatles")
     @parameter_that_is_a_java_class = (Rjb::import 'java.util.HashMap').new
     @parameter_that_is_a_java_class.put("title", title)
-
     respond_with nil
   end
   

@@ -70,7 +70,7 @@ module JasperRails
           # This is here to avoid the "already initialized constant DOCUMENT_POSITION_*" warnings.
           _JRXmlUtils._invoke('parse', 'Lorg.xml.sax.InputSource;', input_source)
         end
-
+        
         jasper_params.put(_JRXPathQueryExecuterFactory.PARAMETER_XML_DATA_DOCUMENT, data_document)
 
         generate_jasper_print jasper_params, jasper_file
