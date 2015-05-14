@@ -26,7 +26,7 @@ group :development, :test do
 
   gem 'responders'
   
-  gem 'jasper-rails-rspec'
+  gem 'jasper-rails-rspec', github: 'ElamT/jasper-rails-rspec'
 
   gem 'ffaker'
 
