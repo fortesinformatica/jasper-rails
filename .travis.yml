@@ -6,7 +6,3 @@ rvm:
   - 2.2.1
 env:
   - "RAILS_VERSION=default"
-before_install:
- - sudo apt-add-repository multiverse
- - sudo apt-get update
- - sudo apt-get install ttf-mscorefonts-installer
