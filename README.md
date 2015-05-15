@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/ElamT/jasper-rails.svg?branch=master)](https://travis-ci.org/ElamT/jasper-rails)
+
 # jasper-rails
 
 JasperReports/Rails integration using Rjb (Ruby Java Bridge)
