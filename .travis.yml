@@ -12,4 +12,4 @@ env:
   - "RAILS_VERSION=4.2"
   - "RAILS_VERSION=default"
 before_install:
- - sudo apt-get install ttf-mscorefonts-installer
+ - sudo apt-get install ttf-mscorefonts --fix-missing
