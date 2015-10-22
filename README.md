@@ -101,6 +101,19 @@ You can change any default report param by setting JasperRails.config[:report_pa
     JasperRails.config[:report_params]["REPORT_LOCALE"] = JasperRails::Locale.new('pt', 'BR')
   end
 ```
+## Problems with wicked PDF
+When you try to use jasper in a proyect with wicked_pdf, the render always use wicked_pdf
+if you want use jasper tell your controller that it "responds to" :jasperpdf
+
+```ruby
+  respond_to :jasperpdf
+
+  def index
+    @people = Person.all
+    respond_with @people
+  end
+```
+and in the url use the extension .jasperpdf
 
 ## RSpec integration
 Check out: [jasper-rails-rspec](http://github.com/fortesinformatica/jasper-rails-rspec).
