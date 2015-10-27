@@ -3,6 +3,11 @@ module JasperRails
   
   class DefaultRenderer < JasperReportsRenderer
     
+    register :jasperpdf, :mime_type => Mime::PDF do |jasper_print, options|
+      _JasperExportManager = Rjb::import 'net.sf.jasperreports.engine.JasperExportManager'
+      _JasperExportManager._invoke('exportReportToPdf', 'Lnet.sf.jasperreports.engine.JasperPrint;', jasper_print)
+    end
+
     register :pdf, :mime_type => Mime::PDF do |jasper_print, options|
       _JasperExportManager = Rjb::import 'net.sf.jasperreports.engine.JasperExportManager'
       _JasperExportManager._invoke('exportReportToPdf', 'Lnet.sf.jasperreports.engine.JasperPrint;', jasper_print)
